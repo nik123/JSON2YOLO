@@ -1,3 +1,5 @@
+import argparse
+
 import contextlib
 import json
 
@@ -310,7 +312,7 @@ def convert_coco_json(json_dir='../coco/annotations/', use_segments=False, cls91
 
 
 def min_index(arr1, arr2):
-    """Find a pair of indexes with the shortest distance. 
+    """Find a pair of indexes with the shortest distance.
     Args:
         arr1: (N, 2).
         arr2: (M, 2).
@@ -324,12 +326,12 @@ def min_index(arr1, arr2):
 def merge_multi_segment(segments):
     """Merge multi segments to one list.
     Find the coordinates with min distance between each segment,
-    then connect these coordinates with one thin line to merge all 
+    then connect these coordinates with one thin line to merge all
     segments into one.
 
     Args:
         segments(List(List)): original segmentations in coco's json file.
-            like [segmentation1, segmentation2,...], 
+            like [segmentation1, segmentation2,...],
             each segmentation is a list of coordinates.
     """
     s = []
@@ -384,7 +386,10 @@ if __name__ == '__main__':
     source = 'COCO'
 
     if source == 'COCO':
-        convert_coco_json('../datasets/coco/annotations',  # directory with *.json
+        parser = argparse.ArgumentParser()
+        parser.add_argument("--coco_dir", default="../datasets/coco/annotations")
+        args = parser.parse_args()
+        convert_coco_json(args.coco_dir,  # directory with *.json
                           use_segments=True,
                           cls91to80=True)
 
